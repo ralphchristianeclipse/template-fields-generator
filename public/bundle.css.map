@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "file": "bundle.css",
+  "sources": [
+    "..\\App.svelte"
+  ],
+  "sourcesContent": [
+    "<script>\n  import { getFieldsFromTemplate, setClipboard, sleep } from \"./utils\";\n  let currentTemplate = `name:\npassword:\n  `;\n  $: fields = getFieldsFromTemplate(currentTemplate);\n  $: map = new Map(fields.map(field => [field, \"\"]));\n  $: fieldsAndValues = Array.from(map);\n  $: result = fieldsAndValues\n    .map(([key, value]) => `${key}: ${value}`)\n    .join(\"\\n\");\n  const cachedFunctions = new Map();\n  const handleInput = field => {\n    if (cachedFunctions.has(field)) return cachedFunctions.get(field);\n    const handler = event => {\n      map.set(field, event.target.value);\n      map = new Map(map);\n    };\n    cachedFunctions.set(field, handler);\n    return handler;\n  };\n\n  const handleClick = async () => {\n    await setClipboard(result);\n  };\n</script>\n\n<style>\n  main {\n    font-family: sans-serif;\n    text-align: center;\n  }\n  input {\n    display: block;\n    border: 1px solid #000;\n    width: 100%;\n    padding: 10px 5px;\n    margin-bottom: 10px;\n    outline: 0;\n  }\n</style>\n\n<main>\n  <h3>Your Template Fields</h3>\n  {#each fields as field (field)}\n    <label for={field}>{field}</label>\n    <input placeholder={field} on:input={handleInput(field)} />\n  {:else}\n    <h1>No Results</h1>\n  {/each}\n  <button on:click={handleClick}>Copy Description</button>\n  <pre>{result}</pre>\n  <h3>Put your template here</h3>\n  <textarea bind:value={currentTemplate} rows=\"4\" cols=\"100\" />\n</main>\n"
+  ],
+  "names": [],
+  "mappings": "AA4BE,IAAI,cAAC,CAAC,AACJ,WAAW,CAAE,UAAU,CACvB,UAAU,CAAE,MAAM,AACpB,CAAC,AACD,KAAK,cAAC,CAAC,AACL,OAAO,CAAE,KAAK,CACd,MAAM,CAAE,GAAG,CAAC,KAAK,CAAC,IAAI,CACtB,KAAK,CAAE,IAAI,CACX,OAAO,CAAE,IAAI,CAAC,GAAG,CACjB,aAAa,CAAE,IAAI,CACnB,OAAO,CAAE,CAAC,AACZ,CAAC"
+}
