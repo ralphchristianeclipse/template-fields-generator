@@ -112,6 +112,11 @@ password:
     margin: 0 auto;
     width: 40%;
   }
+  textarea {
+    font-size: 20px;
+    padding: 10px;
+    outline: 0;
+  }
 </style>
 
 <main>
